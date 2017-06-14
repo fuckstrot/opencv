@@ -1,4 +1,6 @@
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bytedeco.javacpp.Loader;
@@ -18,48 +20,40 @@ import static org.bytedeco.javacpp.opencv_objdetect.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
 
 public class FaceRecognizerInVideo {
-
-    public static void main(String[] args) throws Exception, org.bytedeco.javacv.FrameRecorder.Exception {
-        // TODO Auto-generated method stub
-        
+    private static CvHaarClassifierCascade classifier = null;
+    private static final String CASCADE_FILE = "./haarcascade_frontalface_default.xml";
+    static int captureWidth = 800;
+    static int captureHeight = 800;
+    private OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
+    public static void main(String[] args) throws Exception, org.bytedeco.javacv.FrameRecorder.Exception { 
+        classifier = new CvHaarClassifierCascade(cvLoad(CASCADE_FILE));
         OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
-        grabber.start();
-        
+        grabber.setImageWidth(captureWidth);
+        grabber.setImageHeight(captureHeight);
+        grabber.setImageMode(FrameGrabber.ImageMode.GRAY);
+        double frameRate = grabber.getFrameRate();
+        long wait = (long) (1000 / (frameRate == 0 ? 10 : frameRate));
+        grabber.start();      
         OpenCVFrameConverter.ToIplImage frameToIplImage =  new OpenCVFrameConverter.ToIplImage();
-        IplImage grabbedImage = frameToIplImage.convert(grabber.grab());
-        
+        IplImage grabbedImage = frameToIplImage.convert(grabber.grab());       
         IplImage imgGray = cvCreateImage(cvGetSize(grabbedImage), IPL_DEPTH_8U, 1);
-       // IplImage imgHsv = cvCreateImage(cvGetSize(grabbedImage), IPL_DEPTH_8U, 3);
         CanvasFrame canvasFrame = new CanvasFrame("Cam");
-//        CanvasFrame canvasFrame1 = new CanvasFrame("GrayImage");
-//        CanvasFrame canvasFrame2 = new CanvasFrame("HSV Image");
         canvasFrame.setCanvasSize(grabbedImage.width(), grabbedImage.height());
-//        canvasFrame1.setCanvasSize(grabbedImage.width(), grabbedImage.height());
-//        canvasFrame2.setCanvasSize(grabbedImage.width(), grabbedImage.height());
         grabbedImage =  frameToIplImage.convert(grabber.grab());
         canvasFrame.showImage(frameToIplImage.convert(grabbedImage));
-        //cvSave("test"+System.currentTimeMillis(), grabbedImage);
-        //cvReleaseImage(imgHsv);
         boolean stop = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("DD_mm_yy_mm_ss_yy");
         while(!stop){
             grabbedImage = frameToIplImage.convert(grabber.grab());
             canvasFrame.showImage(frameToIplImage.convert(grabbedImage));
-            opencv_imgcodecs.cvSaveImage("captured\\capture_"+System.currentTimeMillis()+".jpg", grabbedImage);
+            opencv_imgcodecs.cvSaveImage("captured2\\"+sdf.format(new Date(System.currentTimeMillis()))
+                    sdf.format(new Date(System.currentTimeMillis()))+".jpg", grabbedImage);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(FaceRecognizerInVideo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        /*while (canvasFrame.isVisible() && (grabbedImage =  frameToIplImage.convert(grabber.grab())) != null) {
-            cvCvtColor(grabbedImage, imgGray, CV_BGR2GRAY);
-            cvCvtColor(grabbedImage, imgHsv, CV_BGR2HSV);
-            cvSave("test"+System.currentTimeMillis()+".jpg", imgHsv);
-            cvReleaseImage(imgHsv);
-            canvasFrame.showImage(frameToIplImage.convert(grabbedImage));
-//            canvasFrame1.showImage(frameToIplImage.convert(imgGray));
-           //canvasFrame2.showImage(frameToIplImage.convert(imgHsv));
-        }*/
         grabber.stop();
         canvasFrame.dispose();
     }

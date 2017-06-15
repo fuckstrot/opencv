@@ -15,8 +15,8 @@ public class WebcamCapture {
     final private static int WEBCAM_DEVICE_INDEX = 0;
 
     public static void main(String[] args) throws Exception, org.bytedeco.javacv.FrameGrabber.Exception {
-        int captureWidth = 400;
-        int captureHeight = 400;
+        int captureWidth = 1000;
+        int captureHeight = 1000;
         // The available FrameGrabber classes include OpenCVFrameGrabber (opencv_videoio),
         // DC1394FrameGrabber, FlyCaptureFrameGrabber, OpenKinectFrameGrabber,
         // PS3EyeFrameGrabber, VideoInputFrameGrabber, and FFmpegFrameGrabber.

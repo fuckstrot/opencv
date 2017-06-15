@@ -22,11 +22,11 @@ import static org.bytedeco.javacpp.opencv_highgui.*;
 public class FaceRecognizerInVideo {
     private static CvHaarClassifierCascade classifier = null;
     private static final String CASCADE_FILE = "./haarcascade_frontalface_default.xml";
-    static int captureWidth = 800;
-    static int captureHeight = 800;
+    static int captureWidth = 1000;
+    static int captureHeight = 1000;
     private OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
     public static void main(String[] args) throws Exception, org.bytedeco.javacv.FrameRecorder.Exception { 
-        classifier = new CvHaarClassifierCascade(cvLoad(CASCADE_FILE));
+        //classifier = new CvHaarClassifierCascade(cvLoad(CASCADE_FILE));
         OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
         grabber.setImageWidth(captureWidth);
         grabber.setImageHeight(captureHeight);
@@ -42,12 +42,11 @@ public class FaceRecognizerInVideo {
         grabbedImage =  frameToIplImage.convert(grabber.grab());
         canvasFrame.showImage(frameToIplImage.convert(grabbedImage));
         boolean stop = false;
-        SimpleDateFormat sdf = new SimpleDateFormat("DD_mm_yy_mm_ss_yy");
+        SimpleDateFormat sdf = new SimpleDateFormat("DD_MM_yy_mm_ss");
         while(!stop){
             grabbedImage = frameToIplImage.convert(grabber.grab());
             canvasFrame.showImage(frameToIplImage.convert(grabbedImage));
-            opencv_imgcodecs.cvSaveImage("captured2\\"+sdf.format(new Date(System.currentTimeMillis()))
-                    sdf.format(new Date(System.currentTimeMillis()))+".jpg", grabbedImage);
+            opencv_imgcodecs.cvSaveImage("captured\\"+sdf.format(new Date(System.currentTimeMillis()))+".jpg", grabbedImage);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {

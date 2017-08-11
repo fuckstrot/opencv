@@ -1,6 +1,11 @@
 package datatype;
 
-public class Person {
+import java.io.Serializable;
+import java.util.List;
+import org.bytedeco.javacpp.opencv_core;
+
+public class Person implements  Serializable{
+    private List<opencv_core.Mat> imgs;
     private Coordinates coordinatePair;
     private String label;
     private int id;

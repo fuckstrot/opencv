@@ -1,5 +1,6 @@
 package opencv.recognition.face;
 
+import datamanager.Db;
 import datatype.Coordinates;
 import datatype.Person;
 import java.text.DecimalFormat;
@@ -32,6 +33,7 @@ public class RealTimeFaceRecognizer extends Application{
     private static double deltaY ;  
     private static int width = 640;  
     private static double higth = 480; 
+    private static Db db;
     
     @Override
     public void start(Stage primaryStage) {
@@ -60,7 +62,8 @@ public class RealTimeFaceRecognizer extends Application{
                 if((System.currentTimeMillis()-person.getLastSeen())>200 && person.index <100) {
                     iter.remove();
                 } else if((System.currentTimeMillis()-person.getLastSeen())>2000 && person.index >100){
-                    launch(args);
+                    db.save(persons);
+                    //launch(args);
                 } else if(face_i.tl().x() >= (person.getCoordinatePair().getX() - deltaX) &&
                    face_i.tl().x() <=  (person.getCoordinatePair().getX() + deltaX) &&
                    face_i.tl().y() >= (person.getCoordinatePair().getY() - deltaY) &&
@@ -78,6 +81,7 @@ public class RealTimeFaceRecognizer extends Application{
     public static void main(String[] args) throws Exception {
         deltaX = width * deltaK;
         deltaY = higth * deltaK;
+        db = new Db();
         
         OpenCVFrameConverter.ToMat converterToMat = new OpenCVFrameConverter.ToMat();
         OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);

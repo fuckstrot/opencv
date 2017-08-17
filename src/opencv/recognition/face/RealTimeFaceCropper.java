@@ -44,6 +44,8 @@ public class RealTimeFaceCropper {
         Mat face = null;
         int pos_x = 0;
         int pos_y = 0;
+        Size s1 = new Size(100,100);
+        Size s2 = new Size(600,600);
         while (true) {
             videoFrame = grabber.grab();
             videoMat = converterToMat.convert(videoFrame);
@@ -56,6 +58,7 @@ public class RealTimeFaceCropper {
             faces = new RectVector();
             // Find the faces in the frame:
             face_cascade.detectMultiScale(videoMatGray, faces);
+            //face_cascade.detectMultiScale(videoMatGray, faces, CV_PI, CV_C, CV_C, s1, s2);
             // At this point you have the position of the faces in
             // faces. Now we'll get the faces, make a prediction and
             // annotate it in the video. Cool or what?
@@ -78,7 +81,7 @@ public class RealTimeFaceCropper {
                 }
             }
             // Show the result:
-            imshow("face_recognizer", videoMat);
+            imshow("face_crop", videoMat);
 
             char key = (char) waitKey(20);
             // Exit this loop on escape:

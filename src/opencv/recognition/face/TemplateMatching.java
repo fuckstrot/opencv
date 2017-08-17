@@ -1,27 +1,14 @@
 package opencv.recognition.face;
-import org.bytedeco.javacv.*;
 import org.bytedeco.javacpp.*;
 import org.bytedeco.javacpp.indexer.FloatIndexer;
-
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
 import static org.bytedeco.javacpp.opencv_imgcodecs.*;
-import static org.bytedeco.javacpp.opencv_calib3d.*;
-import static org.bytedeco.javacpp.opencv_objdetect.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Example of template javacv (opencv) template matching using the last java build
- *
- * We need 2 default parameters like this (source image, image to find )
- * "C:\Users\Waldema\Desktop\bg.jpg" "C:\Users\Waldema\Desktop\imageToFind.jpg" 
- *
- * @author Waldemar Neto
- */
 public class TemplateMatching {
 
     public static void main(String[] args) throws Exception {

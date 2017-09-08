@@ -98,7 +98,7 @@ public class RealTimeFaceRecognizer {
                 }
             }
             // Show the result:
-            imshow("label: "+label.get(0), videoMat);
+            imshow("label: ", videoMat);
 
             char key = (char) waitKey(20);
             // Exit this loop on escape:
@@ -106,11 +106,11 @@ public class RealTimeFaceRecognizer {
                 destroyAllWindows();
                 break;
             }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(RealTimeFaceRecognizer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                Thread.sleep(100);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(RealTimeFaceRecognizer.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
     }
 }

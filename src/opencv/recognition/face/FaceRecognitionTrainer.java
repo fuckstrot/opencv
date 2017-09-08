@@ -14,8 +14,10 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 
 public class FaceRecognitionTrainer {
+    public static final String trainingDir = "C:\\Users\\shipulin.mihail\\Desktop\\test\\traindir\\";
+    public static final String trainedCascade = "C:\\Users\\shipulin.mihail\\Desktop\\test\\trained_cascade.yml";
     public static void main(String[] args) {
-        String trainingDir = "C:\\Users\\shipulin.mihail\\Desktop\\test\\traindir\\";
+        
 
         File root = new File(trainingDir);
         FilenameFilter imgFilter = new FilenameFilter() {
@@ -46,6 +48,6 @@ public class FaceRecognitionTrainer {
         System.out.println(sdf.format(new Date(System.currentTimeMillis()))+" start train");
         faceRecognizer.train(images, labels);
         System.out.println(sdf.format(new Date(System.currentTimeMillis()))+" end train");
-        faceRecognizer.save("C:\\Users\\shipulin.mihail\\Desktop\\test\\trained_cascade_1.yml");
+        faceRecognizer.save(trainedCascade);
     }
 }

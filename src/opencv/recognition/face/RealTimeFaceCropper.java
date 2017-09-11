@@ -26,7 +26,6 @@ public class RealTimeFaceCropper {
         OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
         grabber.setImageHeight(1024);
         grabber.setImageWidth(1280);
-        //grabber.setVideoOption("tune", "zerolatency");
         grabber.start();
         Frame videoFrame;
         Mat videoMat;
@@ -46,19 +45,19 @@ public class RealTimeFaceCropper {
             cvtColor(videoMat, videoMatGray, COLOR_BGRA2GRAY);
             equalizeHist(videoMatGray, videoMatGray);
             faces = new RectVector();
+            face_cascade.detectMultiScale(videoMatGray, faces);
+            putObj(faces, videoMatGray, videoMat, "FACE");
+            
 //            EYEs = new RectVector();
 //            NOSEs = new RectVector();
-            //MOUTHes = new RectVector();
-             face_cascade.detectMultiScale(videoMatGray, faces);
+            //MOUTHes = new RectVector();             
             // face_EYE.detectMultiScale(videoMatGray, EYEs);
             // face_NOSE.detectMultiScale(videoMatGray, NOSEs);
-            //face_MOUTH.detectMultiScale(videoMatGray, MOUTHes);
-            putObj(faces, videoMatGray, videoMat, "FACE");
+            //face_MOUTH.detectMultiScale(videoMatGray, MOUTHes);           
             //putObj(EYEs, videoMatGray, videoMat, "EYEs");
             //putObj(NOSEs, videoMatGray, videoMat, "NOSEs");
 //            putObj(MOUTHes, videoMatGray, videoMat, "Eyes");
             imshow("faceZILLA", videoMat);
-
             char key = (char) waitKey(20);
             if (key == 27) {
                 destroyAllWindows();
@@ -70,11 +69,10 @@ public class RealTimeFaceCropper {
     private static void putObj(RectVector faces, Mat videoMatGray, Mat videoMat, String text) {
         Rect face_i;
         Mat face;
-        Rect rect = null;
-       
+        Rect rect;
         for (int i = 0; i < faces.size(); i++) {
             face_i = faces.get(i);
-            if (face_i.size().height() > videoMatGray.size().height() / 5) {
+            if (face_i.size().height() > videoMatGray.size().height() / 2) {
                 rect = new Rect(face_i.tl().x()+face_i.width()/(K*2), face_i.tl().y()+face_i.width()/K, face_i.width()*(K-1)/K, face_i.width()*(K-1)/K);
                 face = new Mat(videoMatGray, rect);
                 rectangle(videoMat, rect, new Scalar(0, 0, 255, 1));
